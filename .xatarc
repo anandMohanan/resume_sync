@@ -1,0 +1,6 @@
+{
+  "databaseURL": "https://anand-s-workspace-8aa46o.us-east-1.xata.sh/db/resumesyncdb",
+  "codegen": {
+    "output": "src/xata.ts"
+  }
+}

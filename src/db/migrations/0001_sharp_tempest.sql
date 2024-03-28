@@ -1,0 +1,1 @@
+CREATE INDEX IF NOT EXISTS "user_user_idx" ON "user" ("id");
