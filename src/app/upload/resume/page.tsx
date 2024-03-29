@@ -67,8 +67,9 @@ const UploadResumePage = () => {
             const item = await getTagsAction();
             setItems(item);
         };
+        console.log("calling multiple times")
         getTags();
-    }, [items]);
+    }, []);
     // const items = [{
     //     id: "1",
     //     label: "Tag 1"

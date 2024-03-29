@@ -6,6 +6,7 @@ import MaxWidthWrapper from "@/components/ui/maxwidthwrapper";
 import { ThemeProvider } from "@/components/ui/themeprovider";
 import "@uploadthing/react/styles.css";
 import { Toaster } from "@/components/ui/toaster";
+import { Footer } from "@/components/footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -26,6 +27,7 @@ export default function RootLayout({
                     <MaxWidthWrapper>
                         {children}
                     </MaxWidthWrapper>
+                    <Footer />
                 </ThemeProvider>
                 <Toaster />
             </body>

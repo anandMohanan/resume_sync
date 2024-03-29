@@ -6,7 +6,7 @@ import { TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import { DownloadIcon } from "lucide-react";
 import Link from "next/link";
-
+import { Document, Page, pdfjs } from "react-pdf"
 
 
 export const DataTable = ({ data }: {
@@ -19,16 +19,17 @@ export const DataTable = ({ data }: {
     }[]
 
 }) => {
+    pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.js`;
     return (
         <TableBody className="p-10">
             {data ? (
                 data.map((resume) => (
                     <Collapsible key={resume.id} asChild>
                         <>
-                            <TableRow className="p-10">
+                            <TableRow className="">
                                 <TableCell>{resume.resume_name}</TableCell>
                                 <TableCell>{resume.version}</TableCell>
-                                <TableCell>
+                                <TableCell className="w-20">
                                     <div className="flex  items-center">
                                         <Link href={resume.file_url!} className="underline text-blue-300" > <DownloadIcon className="h-4 w-4" /> </Link>
                                         <CollapsibleTrigger asChild>
@@ -40,10 +41,13 @@ export const DataTable = ({ data }: {
                                     </div>
                                 </TableCell>
                             </TableRow>
-                            <CollapsibleContent asChild>
-                                <>
+                            <CollapsibleContent className="w-full" asChild>
+                                <div>
                                     <p>{resume.comments} </p>
-                                </>
+                                    <Document file={resume.file_url} >
+                                        <Page pageNumber={1} />
+                                    </Document>
+                                </div>
                             </CollapsibleContent>
                         </>
                     </Collapsible>
