@@ -6,7 +6,6 @@ import { TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import { DownloadIcon } from "lucide-react";
 import Link from "next/link";
-import { Document, Page, pdfjs } from "react-pdf"
 
 
 export const DataTable = ({ data }: {
@@ -19,7 +18,6 @@ export const DataTable = ({ data }: {
     }[]
 
 }) => {
-    pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.js`;
     return (
         <TableBody className="p-10">
             {data ? (
@@ -43,10 +41,7 @@ export const DataTable = ({ data }: {
                             </TableRow>
                             <CollapsibleContent className="w-full" asChild>
                                 <div>
-                                    <p>{resume.comments} </p>
-                                    <Document file={resume.file_url} >
-                                        <Page pageNumber={1} />
-                                    </Document>
+                                    <p> ui jh gjhsgdjfhgsdj fgsdj fjhsdgfgsgf shjakg skjhd hjkagfkuygefuyjhdgfjhgh fhjdgfdjhg fhjg sdhfjgskah ghfgsgnmbvxcng jdfhg jsfggfsiu sg jgfhjg h </p>
                                 </div>
                             </CollapsibleContent>
                         </>

@@ -1,5 +1,4 @@
 
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
     Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
@@ -20,7 +19,7 @@ interface ResumePageProps {
 const ResumePage = async ({ params }: ResumePageProps) => {
     const data = await db.select({
         id: ResumeTable.resumeId, resume_name: ResumeTable.resumeName,
-        version: ResumeTable.version, file_url: ResumeTable.resumeUrl, 
+        version: ResumeTable.version, file_url: ResumeTable.resumeUrl,
         comments: ResumeTable.comments
     }).from(ResumeTable).where(eq(ResumeTable.userId, params.userId))
     return (

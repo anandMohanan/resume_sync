@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/ui/themeprovider";
 import "@uploadthing/react/styles.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Footer } from "@/components/footer";
+import { ReactQueryClientProvider } from "./QueryProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -23,11 +24,13 @@ export default function RootLayout({
         <html lang="en" suppressHydrationWarning>
             <body className={inter.className}>
                 <ThemeProvider attribute="class">
-                    <Navbar />
-                    <MaxWidthWrapper>
-                        {children}
-                    </MaxWidthWrapper>
-                    <Footer />
+                    <ReactQueryClientProvider>
+                        <Navbar />
+                        <MaxWidthWrapper>
+                            {children}
+                        </MaxWidthWrapper>
+                        <Footer />
+                    </ReactQueryClientProvider>
                 </ThemeProvider>
                 <Toaster />
             </body>

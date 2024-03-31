@@ -1,8 +1,6 @@
 import { FAQ } from "@/components/faq";
 import { Features } from "@/components/features";
-import { Footer } from "@/components/footer";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { useMediaQuery } from "@/hooks/hooks";
 import { LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { ArrowRight, Cable } from "lucide-react";

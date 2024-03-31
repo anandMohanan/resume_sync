@@ -9,16 +9,15 @@ import { useToast } from "@/components/ui/use-toast"
 import { useMediaQuery } from "@/hooks/hooks"
 import { cn } from "@/lib/utils"
 import { DialogDescription } from "@radix-ui/react-dialog"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useState, useTransition } from "react"
 
 export const CreateTag = () => {
     const isDesktop = useMediaQuery("(min-width: 768px)");
     const [open, setOpen] = useState(false)
-    const [isCreatePending, setCreatePending] = useState(false)
     const [newTag, setNewTag] = useState("")
     const { toast } = useToast()
     const createTag = async () => {
-        setCreatePending(true)
         try {
             const res = await createTagAction(newTag)
             if (res.status === "error") {
@@ -33,7 +32,6 @@ export const CreateTag = () => {
                     variant: "default",
                 })
             }
-            setCreatePending(false)
             setOpen(false)
         } catch (e: any) {
             toast({
@@ -45,6 +43,13 @@ export const CreateTag = () => {
         }
 
     }
+    const queryClient = useQueryClient()
+    const { isPending, mutateAsync } = useMutation({
+        mutationFn: createTag,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["tags"] });
+        }
+    })
     if (isDesktop) {
         return (
 
@@ -56,7 +61,7 @@ export const CreateTag = () => {
                     <DialogHeader>
                     </DialogHeader>
                     <Input type="create tag" placeholder="Tag name" onChange={(e) => setNewTag(e.target.value)} />
-                    <Button type="submit" disabled={isCreatePending} onClick={() => createTag()} >Create</Button>
+                    <Button type="submit" disabled={isPending} onClick={() => mutateAsync()} >Create</Button>
                 </DialogContent>
             </Dialog>
         )
@@ -70,7 +75,7 @@ export const CreateTag = () => {
                     <DrawerHeader> </DrawerHeader>
                     <div >
                         <Input type="create tag" className="mb-10" placeholder="Tag name" onChange={(e) => setNewTag(e.target.value)} />
-                        <Button type="submit" className="mb-10 ml-5 w-full" disabled={isCreatePending} onClick={() => createTag()} >Create</Button>
+                        <Button type="submit" className="mb-10 ml-5 w-full" disabled={isPending} onClick={() => mutateAsync()} >Create</Button>
                     </div>
                 </DrawerContent>
             </Drawer>

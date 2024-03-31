@@ -46,7 +46,13 @@ export const deleteTagsAction = async (tagId: string) => {
     try {
         const { getUser } = getKindeServerSession()
         const user = await getUser()
-
+        const tag = await db.select().from(Tags).where(and(eq(Tags.tagId, tagId), eq(Tags.userId, user?.id!)))
+        if (tag.length === 0) {
+            return {
+                message: `Tag not found`,
+                status: "error"
+            }
+        }
         await db.delete(Tags).where(and(eq(Tags.tagId, tagId), eq(Tags.userId, user?.id!)))
         revalidatePath("/upload/resume")
         return {
