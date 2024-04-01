@@ -6,9 +6,12 @@ import { DataTable } from "./data-table";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { db } from "@/db";
-import { ResumeTable, ResumeTag } from "@/db/schema/resume";
-import { eq } from "drizzle-orm";
+import { ResumeTable, ResumeTag, Tags } from "@/db/schema/resume";
+import { desc, eq, sql } from "drizzle-orm";
 import Link from "next/link";
+import { ResumeTableContent } from "./resume_table";
+import { UserTable } from "@/db/schema/user";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 interface ResumePageProps {
     params: {
         userId: string
@@ -21,27 +24,41 @@ const ResumePage = async ({ params }: ResumePageProps) => {
         id: ResumeTable.resumeId, resume_name: ResumeTable.resumeName,
         version: ResumeTable.version, file_url: ResumeTable.resumeUrl,
         comments: ResumeTable.comments
-    }).from(ResumeTable).where(eq(ResumeTable.userId, params.userId))
-    return (
-        <div className="w-full sm:p-4">
-            <div className="flex justify-between align-middle items-center m-auto p-5">
-                <p className="font-bold">Your Resume <span className="text-red-800"> &apos; </span>s </p>
-                <Link href={"/upload/resume"} className={buttonVariants()}> Upload Resume </Link>
+    }).from(ResumeTable).where(eq(ResumeTable.userId, params.userId)).orderBy(desc(ResumeTable.version))
+    const { getUser } = getKindeServerSession()
+    const user = await getUser()
+    if (user?.id !== params.userId) {
+        return (
+            <div className="w-full sm:p-4">
+                <div className="flex justify-between align-middle items-center m-auto p-5">
+                    <p className="font-bold">You are not authenticated to view this page</p>
+                    <Link href={`/resume/${user?.id}`} className={buttonVariants()}> Redirect </Link>
+                </div>
             </div>
-            <div className="rounded-md sm:border">
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead className="font-medium">Resume</TableHead>
-                            <TableHead className="font-medium">Version</TableHead>
-                            <TableHead className="font-medium">URL</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <DataTable data={data} />
-                </Table>
+        )
+    }
+    if (data.length == 0) {
+        return (
+            <div className="w-full sm:p-4">
+                <div className="flex justify-between align-middle items-center m-auto p-5">
+                    <p className="font-bold">Your Resume <span className="text-red-800"> &apos; </span>s </p>
+                    <Link href={"/upload/resume"} className={buttonVariants()}> Upload Resume </Link>
+                </div>
+                <h1>No Resume </h1>
             </div>
-        </div>
-    )
+        )
+    } else {
+        return (
+
+            <div className="w-full sm:p-4">
+                <div className="flex justify-between align-middle items-center m-auto p-5">
+                    <p className="font-bold">Your Resume <span className="text-red-800"> &apos; </span>s </p>
+                    <Link href={"/upload/resume"} className={buttonVariants()}> Upload Resume </Link>
+                </div>
+                <ResumeTableContent data={data} />
+            </div>
+        )
+    }
 }
 
 

@@ -1,7 +1,7 @@
 "use server"
 
 import { db } from "@/db"
-import { Tags } from "@/db/schema/resume"
+import { ResumeTag, Tags } from "@/db/schema/resume"
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 import { and, eq } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
@@ -54,6 +54,7 @@ export const deleteTagsAction = async (tagId: string) => {
             }
         }
         await db.delete(Tags).where(and(eq(Tags.tagId, tagId), eq(Tags.userId, user?.id!)))
+        await db.delete(ResumeTag).where(eq(ResumeTag.tagId, tagId))
         revalidatePath("/upload/resume")
         return {
             message: "Tag Deleted",
@@ -78,4 +79,16 @@ export const getTagsAction = async () => {
     }).from(Tags).where(eq(Tags.userId, user?.id!))
     return tags
 
+}
+
+
+
+
+export const getTagsByUserId = async () => {
+
+    const { getUser } = getKindeServerSession()
+    const user = await getUser()
+
+    const tags = await db.select({ tagName: Tags.name, resumeId: ResumeTag.resumeId }).from(Tags).fullJoin(ResumeTag, eq(ResumeTag.tagId, Tags.tagId)).where(eq(Tags.userId, user?.id!))
+    return tags
 }

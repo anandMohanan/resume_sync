@@ -57,6 +57,13 @@
       "when": 1711461557477,
       "tag": "0007_nosy_satana",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1711951803041,
+      "tag": "0008_wandering_lake",
+      "breakpoints": true
     }
   ]
 }

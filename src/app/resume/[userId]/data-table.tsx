@@ -4,20 +4,92 @@ import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { CaretSortIcon } from "@radix-ui/react-icons";
-import { DownloadIcon } from "lucide-react";
+import { Delete, DownloadIcon, Ellipsis, Loader, Loader2Icon } from "lucide-react";
 import Link from "next/link";
+import 'react-pdf/dist/Page/AnnotationLayer.css';
+import 'react-pdf/dist/Page/TextLayer.css';
+import { Document, Outline, Page, pdfjs } from "react-pdf";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuShortcut, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useToast } from "@/components/ui/use-toast";
+import { DeleteResumeById } from "@/actions/Resume";
+import { Input } from "@/components/ui/input";
+import { useMediaQuery } from "@/hooks/hooks";
+import { getTagsByResumeAction, getTagsByUserId } from "@/actions/Tags";
+import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Textarea } from "@/components/ui/textarea";
 
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
 
-export const DataTable = ({ data }: {
+interface DataTableProps {
     data: {
         id: string | null,
         resume_name: string | null,
         version: string | null,
         file_url: string | null,
         comments: string | null
-    }[]
+    }[],
+}
+export const DataTable = ({ data }:
+    DataTableProps
+) => {
+    const { toast } = useToast();
+    const { mutateAsync: deleteResume } = useMutation({
+        mutationFn: async (resumeId: string) => {
+            const res = await DeleteResumeById(resumeId)
+            if (res.status === "success") {
+                toast({
+                    description: `${res.message}`,
+                    variant: "default",
+                });
+            } else {
+                toast({
+                    description: `${res.message}`,
+                    variant: "default",
+                });
+            }
+        }
 
-}) => {
+    })
+    const { data: tags } = useQuery({
+        queryKey: ["gettags"],
+        queryFn: async () => {
+            const res = await getTagsByUserId()
+            return res
+        }
+    })
+    const RowContent = ({ resumeData }: { resumeData: { id: string | null, resume_name: string | null, version: string | null, file_url: string | null, comments: string | null } }) => {
+        return (
+            <td colSpan={10}>
+                <div className="flex justify-center">
+                    <Document loading={<Loader2Icon className="animate-spin text-center" />} className="p-10" file={resumeData.file_url}>
+                        <Page pageNumber={1} width={300} height={300} />
+                    </Document>
+                    <div className="items-center">
+                        <div className="p-10">
+                            <div>
+                                <h1 className="bold underline mb-5"> Comments:  </h1>
+                                <Textarea value={resumeData.comments!} readOnly className="" />
+                            </div>
+                        </div>
+                        <div className="p-10">
+                            <h1 className="bold underline mb-5">Tags:</h1>
+                            {tags && tags?.length > 0 && tags?.map(tag => {
+                                if (tag.resumeId === resumeData.id) {
+                                    return (
+                                        <Badge variant={"outline"} className="text-md" key={tag.tagName}>{tag.tagName}</Badge>
+                                    );
+                                } else {
+                                    return null;
+                                }
+                            })}
+                        </div>                    </div>
+                </div>
+            </td>
+        )
+
+    }
     return (
         <TableBody className="p-10">
             {data ? (
@@ -25,23 +97,44 @@ export const DataTable = ({ data }: {
                     <Collapsible key={resume.id} asChild>
                         <>
                             <TableRow className="">
-                                <TableCell>{resume.resume_name}</TableCell>
-                                <TableCell>{resume.version}</TableCell>
-                                <TableCell className="w-20">
+                                <TableCell>
                                     <div className="flex  items-center">
-                                        <Link href={resume.file_url!} className="underline text-blue-300" > <DownloadIcon className="h-4 w-4" /> </Link>
-                                        <CollapsibleTrigger asChild>
+                                        <CollapsibleTrigger asChild >
                                             <Button variant="ghost" size="sm">
                                                 <CaretSortIcon className="h-4 w-4" />
                                                 <span className="sr-only">Toggle</span>
                                             </Button>
                                         </CollapsibleTrigger>
+
+                                        {resume.resume_name}
+
                                     </div>
+                                </TableCell>
+                                <TableCell className="bg-green-900 text-center">{resume.version}</TableCell>
+                                <TableCell className="text-center">
+                                    <Link href={resume.file_url!} className="text-blue-300" > Download </Link>
+                                </TableCell>
+                                <TableCell className="text-center">
+                                    <DropdownMenu>
+
+                                        <DropdownMenuTrigger asChild className="">
+                                            <Button variant="ghost" className=""><Ellipsis /> </Button>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent>
+                                            <DropdownMenuItem className="cursor-pointer">
+                                                <Link href={`/resume/edit/${resume.id}`}> Edit</Link>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem className="cursor-pointer" onClick={() => deleteResume(resume.id!)}>
+                                                Delete
+                                            </DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
+
                                 </TableCell>
                             </TableRow>
                             <CollapsibleContent className="w-full" asChild>
                                 <div>
-                                    <p> ui jh gjhsgdjfhgsdj fgsdj fjhsdgfgsgf shjakg skjhd hjkagfkuygefuyjhdgfjhgh fhjdgfdjhg fhjg sdhfjgskah ghfgsgnmbvxcng jdfhg jsfggfsiu sg jgfhjg h </p>
+                                    <RowContent resumeData={resume} />
                                 </div>
                             </CollapsibleContent>
                         </>
@@ -50,4 +143,5 @@ export const DataTable = ({ data }: {
             ) : null}
         </TableBody>
     );
+
 }

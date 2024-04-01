@@ -24,6 +24,7 @@ export const Tags = pgTable("tags", {
     userId: text("user_id").references(() => UserTable.userId),
 })
 export const ResumeTag = pgTable("resume_tag", {
-    tagId: text("tag_id").primaryKey().default(sql`gen_random_uuid()::text`),
+    resumeTagId: text("resume_tag_id").primaryKey().default(sql`gen_random_uuid()::text`),
+    tagId: text("tag_id").references(() => Tags.tagId),
     resumeId: text("resume_id").references(() => ResumeTable.resumeId),
 })

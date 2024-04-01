@@ -31,6 +31,7 @@ import { InsertResume } from "@/actions/Resume";
 import { useRouter } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
 const formSchema = z.object({
     name: z.string().min(3).max(100),
     version: z.number().min(1),
@@ -91,9 +92,10 @@ export const UploadResume = () => {
         setIsCreateResumePending(true);
         const fileArray = Array.from(values.file);
         console.log("vales ------>", values);
-        const [res] = await uploadFiles("imageUploader", {
+        const [res] = await uploadFiles("pdfUploader", {
             files: fileArray,
         });
+
         try {
             console.log(values);
             console.log(values.tags);
@@ -101,7 +103,7 @@ export const UploadResume = () => {
                 values.name,
                 values.version,
                 values.comments,
-                res.name,
+                res.key,
                 res.url,
                 values.tags
             );
@@ -273,7 +275,7 @@ export const UploadResume = () => {
                                 <FormItem>
                                     <FormLabel>File</FormLabel>
                                     <FormControl>
-                                        <Input type="file" {...fileRef} />
+                                        <Input type="file" {...fileRef} accept="application/pdf" />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
