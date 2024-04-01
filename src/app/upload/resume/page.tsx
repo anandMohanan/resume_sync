@@ -1,14 +1,9 @@
-"use server"
+"use server";
 
-import { UploadResume } from "./UploadForm"
+import { UploadResume } from "./UploadForm";
 
 const UploadResumePage = async () => {
-    return (
+  return <UploadResume />;
+};
 
-        <UploadResume />
-    )
-}
-
-
-
-export default UploadResumePage
+export default UploadResumePage;

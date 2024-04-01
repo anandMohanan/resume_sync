@@ -1,2 +1,1 @@
-## Resume Sync 
-
+## Resume Sync

@@ -69,9 +69,7 @@
       "indexes": {
         "user_idx": {
           "name": "user_idx",
-          "columns": [
-            "user_id"
-          ],
+          "columns": ["user_id"],
           "isUnique": false
         }
       },
@@ -80,12 +78,8 @@
           "name": "user_resume_user_id_user_id_fk",
           "tableFrom": "user_resume",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -117,12 +111,8 @@
           "name": "resume_tag_resume_id_user_resume_resume_id_fk",
           "tableFrom": "resume_tag",
           "tableTo": "user_resume",
-          "columnsFrom": [
-            "resume_id"
-          ],
-          "columnsTo": [
-            "resume_id"
-          ],
+          "columnsFrom": ["resume_id"],
+          "columnsTo": ["resume_id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -160,12 +150,8 @@
           "name": "tags_user_id_user_id_fk",
           "tableFrom": "tags",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -205,9 +191,7 @@
       "indexes": {
         "user_user_idx": {
           "name": "user_user_idx",
-          "columns": [
-            "id"
-          ],
+          "columns": ["id"],
           "isUnique": false
         }
       },
