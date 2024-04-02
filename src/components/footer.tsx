@@ -2,7 +2,7 @@ export const Footer = () => {
   return (
     <footer
       id="footer"
-      className="lg:fixed mt-auto flex-shrink bottom-0 w-full bg-background"
+      className=" mt-auto flex-shrink bottom-0 w-full bg-background"
     >
       <hr className="w-11/12 mx-auto" />
 

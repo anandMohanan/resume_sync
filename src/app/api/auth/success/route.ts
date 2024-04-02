@@ -10,12 +10,10 @@ export const GET = async () => {
   if (!user || user == null || !user.id) {
     return new Response(null, { status: 401 });
   }
-  console.log(user.id);
   const dbUser = await db
     .select()
     .from(UserTable)
     .where(eq(UserTable.userId, user.id));
-  console.log(dbUser);
   if (!dbUser || dbUser.length == 0) {
     console.log("user not found");
     try {

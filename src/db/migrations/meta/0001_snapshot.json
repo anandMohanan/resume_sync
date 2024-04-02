@@ -1,6 +1,6 @@
 {
-  "id": "b52bcb5f-790a-41fd-b4a4-af4cfc1c1079",
-  "prevId": "09477cfd-6df9-4690-9ff0-c56d1d6cf4c1",
+  "id": "13b97806-74f9-4e1e-92a5-d5ba3018df52",
+  "prevId": "efb67961-b7d6-4dd7-98fc-c1e722d5f4cb",
   "version": "5",
   "dialect": "pg",
   "tables": {
@@ -10,9 +10,10 @@
       "columns": {
         "resume_id": {
           "name": "resume_id",
-          "type": "serial",
+          "type": "text",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()::text"
         },
         "resume_name": {
           "name": "resume_name",
@@ -44,23 +45,33 @@
           "primaryKey": false,
           "notNull": false
         },
+        "created_date": {
+          "name": "created_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "last_modified_date": {
+          "name": "last_modified_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
         "user_id": {
           "name": "user_id",
-          "type": "serial",
+          "type": "text",
           "primaryKey": false,
-          "notNull": true
-        },
-        "tag_id": {
-          "name": "tag_id",
-          "type": "serial",
-          "primaryKey": false,
-          "notNull": true
+          "notNull": false
         }
       },
       "indexes": {
         "user_idx": {
           "name": "user_idx",
-          "columns": ["user_id"],
+          "columns": [
+            "user_id"
+          ],
           "isUnique": false
         }
       },
@@ -69,17 +80,68 @@
           "name": "user_resume_user_id_user_id_fk",
           "tableFrom": "user_resume",
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "resume_tag": {
+      "name": "resume_tag",
+      "schema": "",
+      "columns": {
+        "resume_tag_id": {
+          "name": "resume_tag_id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()::text"
+        },
+        "tag_id": {
+          "name": "tag_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "resume_id": {
+          "name": "resume_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "resume_tag_tag_id_tags_tag_id_fk": {
+          "name": "resume_tag_tag_id_tags_tag_id_fk",
+          "tableFrom": "resume_tag",
+          "tableTo": "tags",
+          "columnsFrom": [
+            "tag_id"
+          ],
+          "columnsTo": [
+            "tag_id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "user_resume_tag_id_tags_tag_id_fk": {
-          "name": "user_resume_tag_id_tags_tag_id_fk",
-          "tableFrom": "user_resume",
-          "tableTo": "tags",
-          "columnsFrom": ["tag_id"],
-          "columnsTo": ["tag_id"],
+        "resume_tag_resume_id_user_resume_resume_id_fk": {
+          "name": "resume_tag_resume_id_user_resume_resume_id_fk",
+          "tableFrom": "resume_tag",
+          "tableTo": "user_resume",
+          "columnsFrom": [
+            "resume_id"
+          ],
+          "columnsTo": [
+            "resume_id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -93,9 +155,10 @@
       "columns": {
         "tag_id": {
           "name": "tag_id",
-          "type": "serial",
+          "type": "text",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()::text"
         },
         "name": {
           "name": "name",
@@ -105,9 +168,9 @@
         },
         "user_id": {
           "name": "user_id",
-          "type": "serial",
+          "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         }
       },
       "indexes": {},
@@ -116,8 +179,12 @@
           "name": "tags_user_id_user_id_fk",
           "tableFrom": "tags",
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -131,7 +198,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "text",
           "primaryKey": true,
           "notNull": true
         },
@@ -157,7 +224,9 @@
       "indexes": {
         "user_user_idx": {
           "name": "user_user_idx",
-          "columns": ["id"],
+          "columns": [
+            "id"
+          ],
           "isUnique": false
         }
       },

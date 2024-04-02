@@ -161,9 +161,9 @@ export const DataTable = ({ data }: DataTableProps) => {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent>
-                        <DropdownMenuItem className="cursor-pointer">
+                      {/*  <DropdownMenuItem className="cursor-pointer">
                           <Link href={`/resume/edit/${resume.id}`}> Edit</Link>
-                        </DropdownMenuItem>
+                        </DropdownMenuItem> */}
                         <DropdownMenuItem
                           className="cursor-pointer"
                           onClick={() => deleteResume(resume.id!)}

@@ -1,0 +1,1 @@
+ALTER TABLE "user_track" ALTER COLUMN "date_applied" SET DATA TYPE text;
