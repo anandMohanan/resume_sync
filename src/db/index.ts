@@ -6,11 +6,11 @@ import { withAuth } from "@kinde-oss/kinde-auth-nextjs/dist/types/server";
 import { TrackStatus, TrackTable } from "./schema/track";
 
 const schema = {
-  UserTable,
-  ResumeTable,
-  Tags,
-  TrackTable,
-  TrackStatus
+    UserTable,
+    ResumeTable,
+    Tags,
+    TrackTable,
+    TrackStatus
 
 };
 const client = neon(process.env.DATABASE_URL!);

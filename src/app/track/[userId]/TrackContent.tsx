@@ -1,10 +1,13 @@
 "use client"
 
-import { UpdateTrackStatus } from "@/actions/Track";
+import { DeleteTrackAction, UpdateTrackStatus } from "@/actions/Track";
+import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useToast } from "@/components/ui/use-toast";
 import { useMutation } from "@tanstack/react-query";
+import { Ellipsis } from "lucide-react";
 
 interface TrackContentInterface {
     data: {
@@ -24,6 +27,29 @@ export const TrackContent = ({ data, status }: TrackContentInterface) => {
         mutationFn: async ({ trackId, statusId }: { trackId: string, statusId: string }) => {
             try {
                 const res = await UpdateTrackStatus({ trackId, statusId });
+                if (res.status === "success") {
+                    toast({
+                        description: `${res.message}`,
+                        variant: "default",
+                    });
+                } else {
+                    toast({
+                        description: `${res.message}`,
+                        variant: "default",
+                    });
+                }
+            } catch (e: any) {
+                toast({
+                    description: `${e.message}`,
+                    variant: "default",
+                })
+            }
+        }
+    })
+    const { mutateAsync: DeleteTrack, isPending: DeleteTrackPending } = useMutation({
+        mutationFn: async ({ trackId }: { trackId: string }) => {
+            try {
+                const res = await DeleteTrackAction({ trackId });
                 if (res.status === "success") {
                     toast({
                         description: `${res.message}`,
@@ -71,7 +97,7 @@ export const TrackContent = ({ data, status }: TrackContentInterface) => {
                                         </TableCell>
                                         <TableCell className="flex items-center justify-center">
                                             <Select disabled={UpdateStatusPending} onValueChange={(status) => UpdateStatus({ trackId: track.id, statusId: status })}>
-                                                <SelectTrigger className="w-40 text-center items-center">
+                                                <SelectTrigger className="w-40 bg-green-700 text-center items-center">
                                                     {track.status}
                                                 </SelectTrigger>
                                                 <SelectContent className="text-center items-center">
@@ -85,6 +111,24 @@ export const TrackContent = ({ data, status }: TrackContentInterface) => {
                                                     </SelectGroup>
                                                 </SelectContent>
                                             </Select>
+                                        </TableCell>
+
+                                        <TableCell className="text-center">
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger asChild className="">
+                                                    <Button variant="ghost" className="">
+                                                        <Ellipsis />{" "}
+                                                    </Button>
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent>
+                                                    <DropdownMenuItem
+                                                        className="cursor-pointer"
+                                                        onClick={() => DeleteTrack({ trackId: track.id })}
+                                                    >
+                                                        Delete
+                                                    </DropdownMenuItem>
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
                                         </TableCell>
                                     </TableRow>
                                 </>

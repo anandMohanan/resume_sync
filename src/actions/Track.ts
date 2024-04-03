@@ -52,3 +52,22 @@ export const UpdateTrackStatus = async ({ trackId, statusId }: UpdateTrackStatus
     }
 
 }
+
+
+
+interface DeleteTrackInterface {
+    trackId: string
+
+}
+export const DeleteTrackAction = async ({ trackId }: DeleteTrackInterface) => {
+    try {
+        const { getUser } = getKindeServerSession();
+        const user = await getUser();
+        await db.delete(TrackTable).where(eq(TrackTable.TrackId, trackId));
+        revalidatePath(`/track/${user?.id}`);
+        return { message: "Track Deleted", status: "success" };
+    } catch (e) {
+        return { message: `Not able to Delete track, Please try again!`, status: "error" };
+    }
+
+}
