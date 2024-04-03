@@ -15,15 +15,12 @@ export const createTagAction = async (tagName: string) => {
             .select()
             .from(Tags)
             .where(and(eq(Tags.name, tagName), eq(Tags.userId, user?.id!)));
-        console.log("tags from action", tags);
         if (tags.length > 0) {
-            console.log("tag already exists");
             return {
                 message: "Tag Already Exists",
                 status: "error",
             };
         }
-        console.log("inserting tag");
         await db.insert(Tags).values({
             name: tagName,
             userId: user?.id,
@@ -34,7 +31,6 @@ export const createTagAction = async (tagName: string) => {
             status: "success",
         };
     } catch (e) {
-        console.log("assa", e);
         return {
             message: `Not able to create Tag, Please try again!`,
             status: "error",

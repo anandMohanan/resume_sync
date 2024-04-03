@@ -46,7 +46,6 @@ export const ResumeMobile = ({ data }: ResumeMobileProps) => {
         <Accordion type="single" collapsible className="p-5">
             {data.length > 0 &&
                 data.map((resume) => {
-                    console.log(resume);
                     return (
                         <AccordionItem key={resume.id} value={resume.resume_name!}>
                             <AccordionTrigger> {resume.resume_name} </AccordionTrigger>

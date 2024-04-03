@@ -56,7 +56,6 @@ export const UploadResume = () => {
     queryKey: ["tags"],
     queryFn: async () => {
       const res = await getTagsAction();
-      console.log(res);
       return res;
     },
   });
@@ -90,14 +89,11 @@ export const UploadResume = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsCreateResumePending(true);
     const fileArray = Array.from(values.file);
-    console.log("vales ------>", values);
     const [res] = await uploadFiles("pdfUploader", {
       files: fileArray,
     });
 
     try {
-      console.log(values);
-      console.log(values.tags);
       const response = await InsertResume(
         values.name,
         values.version,

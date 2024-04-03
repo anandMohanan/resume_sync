@@ -23,7 +23,6 @@ const TrackPage = async ({ params }: TrackPageParams) => {
         .where(eq(TrackTable.userId, params.userId));
 
     const status = await db.select({ status_id: TrackStatus.status_id, status: TrackStatus.status }).from(TrackStatus);
-    console.log(data);
     return (
         <>
             <TrackForm />

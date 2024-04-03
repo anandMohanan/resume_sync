@@ -21,7 +21,6 @@ interface ResumePageProps {
 }
 export const ResumeTableContent = ({ data }: ResumePageProps) => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  console.log(isDesktop);
   if (isDesktop) {
     return (
       <div className="rounded-md sm:border">

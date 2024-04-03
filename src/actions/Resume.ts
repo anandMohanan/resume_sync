@@ -4,10 +4,8 @@ import { db } from "@/db";
 import { ResumeTable, ResumeTag } from "@/db/schema/resume";
 import { utapi } from "@/lib/utapi";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { warn } from "console";
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { UTApi } from "uploadthing/server";
 
 export const InsertResume = async (
   name: string,
@@ -32,10 +30,7 @@ export const InsertResume = async (
       })
       .returning({ resumeId: ResumeTable.resumeId });
 
-    console.log("tags -----> ", tags);
     tags.forEach(async (tag) => {
-      console.log("tag ---->", tag);
-      console.log(resumeData[0].resumeId);
       await db.insert(ResumeTag).values({
         resumeId: resumeData[0].resumeId,
         tagId: tag,
@@ -86,7 +81,6 @@ export const DeleteResumeById = async (resumeId: string) => {
       status: "success",
     };
   } catch (e) {
-    console.log(e);
     return {
       message: `Not able to delete Resume, Please try again!`,
       status: "error",

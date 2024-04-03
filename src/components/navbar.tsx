@@ -25,8 +25,6 @@ import Image from "next/image";
 
 export const Navbar = async () => {
   const { isAuthenticated, getUser } = await getKindeServerSession();
-  console.log("isAuthenticated", await isAuthenticated());
-  console.log("getUser", await getUser());
   const user = await getUser();
   return (
     <div className="z-100">

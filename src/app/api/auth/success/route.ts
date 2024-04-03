@@ -15,7 +15,6 @@ export const GET = async () => {
     .from(UserTable)
     .where(eq(UserTable.userId, user.id));
   if (!dbUser || dbUser.length == 0) {
-    console.log("user not found");
     try {
       await db.insert(UserTable).values({
         userId: user.id,
