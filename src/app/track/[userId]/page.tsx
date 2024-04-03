@@ -1,7 +1,9 @@
 import { db } from "@/db"
 import { TrackForm } from "./TrackForm"
-import { TrackTable } from "@/db/schema/track"
+import { TrackStatus, TrackTable } from "@/db/schema/track"
 import { eq } from "drizzle-orm"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger } from "@/components/ui/select"
+import { TrackContent } from "./TrackContent"
 
 interface TrackPageParams {
     params: {
@@ -11,29 +13,18 @@ interface TrackPageParams {
 }
 
 const TrackPage = async ({ params }: TrackPageParams) => {
-    const data = await db.select({ id: TrackTable.TrackId,companyName: TrackTable.companyName, dataApplied: TrackTable.dateApplied, status: TrackTable.status }).from(TrackTable).where(eq(TrackTable.userId, params.userId));
+    const data = await db.select({
+        id: TrackTable.TrackId, companyName: TrackTable.companyName,
+        dataApplied: TrackTable.dateApplied, status: TrackStatus.status
+    })
+        .from(TrackTable).leftJoin(TrackStatus, eq(TrackStatus.status_id, TrackTable.status))
+        .where(eq(TrackTable.userId, params.userId));
+    const status = await db.select({ status_id: TrackStatus.status_id, status: TrackStatus.status }).from(TrackStatus);
+    console.log(data);
     return (
         <>
             <TrackForm />
-            {
-                data.map((track) => {
-                    return (
-                        <div className="w-full sm:p-4" key={track.id}>
-                            <div className="flex justify-between align-middle items-center m-auto p-5">
-                                <p className="font-bold">
-                                    {track.companyName}
-                                </p>
-                                <p className="font-bold">
-                                    {track.dataApplied}
-                                </p>
-                                <p className="font-bold">
-                                    {track.status}
-                                </p>
-                            </div>
-                        </div>
-                    )
-                })
-            }
+            <TrackContent data={data} status={status} />
         </>
     )
 

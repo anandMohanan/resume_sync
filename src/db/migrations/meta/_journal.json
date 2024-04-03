@@ -29,6 +29,13 @@
       "when": 1712078815686,
       "tag": "0003_wet_garia",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1712118461540,
+      "tag": "0004_brave_swarm",
+      "breakpoints": true
     }
   ]
 }

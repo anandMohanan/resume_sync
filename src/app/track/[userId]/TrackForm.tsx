@@ -40,7 +40,7 @@ export const TrackForm = () => {
                     variant: "default",
                 });
             }
-        } catch (e) {
+        } catch (e: any) {
             toast({
                 description: `${e.message}`,
                 variant: "default",
