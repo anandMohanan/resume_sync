@@ -8,7 +8,6 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { DataTable } from "./data-table";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { db } from "@/db";
@@ -26,6 +25,7 @@ import { Document, Page, pdfjs } from "react-pdf";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { ResumeMobile } from "./mobile-view";
+import { DataTable } from "./desktop-view";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 interface ResumePageProps {
@@ -37,6 +37,7 @@ interface ResumePageProps {
         comments: string | null;
     }[];
 }
+
 export const ResumeTableContent = ({ data }: ResumePageProps) => {
     const isDesktop = useMediaQuery("(min-width: 768px)");
     if (isDesktop) {

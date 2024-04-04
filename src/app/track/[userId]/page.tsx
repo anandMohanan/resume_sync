@@ -4,8 +4,6 @@ import { TrackStatus, TrackTable } from "@/db/schema/track"
 import { eq } from "drizzle-orm"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger } from "@/components/ui/select"
 import { TrackContent } from "./TrackContent"
-import { DataTable } from "./data-table"
-import { columns } from "./columns"
 
 interface TrackPageParams {
     params: {

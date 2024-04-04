@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { useMutation } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { Document, Page, pdfjs } from "react-pdf";
 
@@ -51,7 +52,7 @@ export const ResumeMobile = ({ data }: ResumeMobileProps) => {
                             <AccordionTrigger> {resume.resume_name} </AccordionTrigger>
                             <AccordionContent asChild>
                                 <div className="p-2">
-                                    <Document file={resume.file_url} className="w-20">
+                                    <Document loading={<Loader2 />} file={resume.file_url} className="w-20">
                                         <Page pageNumber={1} height={400} width={400} className="w-10" />
                                     </Document>
                                     <div className="p-3">
