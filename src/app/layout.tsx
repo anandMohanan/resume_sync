@@ -9,6 +9,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Footer } from "@/components/footer";
 import { ReactQueryClientProvider } from "./QueryProvider";
 import { cn } from "@/lib/utils";
+import Head from "next/head";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -23,6 +24,9 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" suppressHydrationWarning>
+        <Head> 
+<meta name="google-site-verification" content="Kz4X8YFeEdRYjtTEh42enOqBMhgp54UK8Hcr9o04xJ8" />
+        </Head>
             <body className={cn(inter.className, "flex flex-col min-h-screen")}>
                 <ThemeProvider attribute="class">
                     <ReactQueryClientProvider>
