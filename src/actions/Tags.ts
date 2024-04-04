@@ -5,7 +5,6 @@ import { ResumeTag, Tags } from "@/db/schema/resume";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import useSWR from "swr";
 
 export const createTagAction = async (tagName: string) => {
     try {
