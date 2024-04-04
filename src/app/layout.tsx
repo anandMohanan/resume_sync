@@ -15,6 +15,10 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
     title: "Resume Sync",
     description: "Organize resumes with version control, track applications, and join a supportive community for career insights.",
+     verification: {
+    google: 'Kz4X8YFeEdRYjtTEh42enOqBMhgp54UK8Hcr9o04xJ8',
+    
+  }
 };
 
 export default function RootLayout({
@@ -24,9 +28,9 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" suppressHydrationWarning>
-        <Head> 
-<meta name="google-site-verification" content="Kz4X8YFeEdRYjtTEh42enOqBMhgp54UK8Hcr9o04xJ8" />
-        </Head>
+            <Head>
+                <meta name="google-site-verification" content="Kz4X8YFeEdRYjtTEh42enOqBMhgp54UK8Hcr9o04xJ8" />
+            </Head>
             <body className={cn(inter.className, "flex flex-col min-h-screen")}>
                 <ThemeProvider attribute="class">
                     <ReactQueryClientProvider>
